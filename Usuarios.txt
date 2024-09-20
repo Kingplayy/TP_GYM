@@ -1,0 +1,4 @@
+admin;admin123;admin
+user1;password1;socio
+user2;password2;socio
+1;2;3
