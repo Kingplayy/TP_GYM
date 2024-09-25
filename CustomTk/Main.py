@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from PIL import Image  # Necesitarás instalar Pillow para manejar las imágenes
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -7,8 +8,16 @@ class Login:
     def __init__(self):
         # Ventana principal
         self.root = ctk.CTk()
-        self.root.geometry("400x300")
+        self.root.geometry("400x400")
         self.root.title("Sistema Energym")
+        
+        # Cargar imagen
+        self.imagen = ctk.CTkImage(Image.open("Imagenes/barra.jpg"), size=(100, 100))  # Asegúrate de tener "logo.png" en tu directorio
+        
+        # Mostrar la imagen en la ventana
+        self.label_imagen = ctk.CTkLabel(master=self.root, image=self.imagen, text="")  # text="" para mostrar solo la imagen
+        self.label_imagen.pack(pady=10)
+        
         self.Crear_botones()
         
     def validar_login(self):
@@ -60,6 +69,3 @@ class Login:
     
 root = Login()
 root.root.mainloop()
-
-
-
