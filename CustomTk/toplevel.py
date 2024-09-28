@@ -6,39 +6,41 @@ ctk.set_appearance_mode("dark")  # Modo oscuro
 ctk.set_default_color_theme("blue")  # Tema azul
 
 # Definir la clase principal de la aplicación
-class App(ctk.CTk):
-    def __init__(self):
-        super().__init__()
+class Ventana_principal:
+    def crear_ventana(self):
+        self.Ventana = ctk.CTk()
         
         # Configurar la ventana principal
-        self.title("Image Example")
-        self.geometry("800x500")
+        self.Ventana.title("Image Example")
+        self.Ventana.geometry("800x500")
+        self.Ventana.resizable(False, False)
 
         # Configurar el grid layout
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.Ventana.grid_columnconfigure(1, weight=1)
+        self.Ventana.grid_rowconfigure(0, weight=1)
 
         # Llamar a los métodos para construir la interfaz
         self.create_left_frame()
         self.create_right_frame()
+        self.Ventana.mainloop()
 
     def create_left_frame(self):
         # Crear el frame izquierdo (menú de navegación)
-        self.frame_left = ctk.CTkFrame(self, width=200)
+        self.frame_left = ctk.CTkFrame(self.Ventana, width=200)
         self.frame_left.grid(row=0, column=0, sticky="nswe")
 
         # Añadir un logo o título
-        self.logo_label = ctk.CTkLabel(self.frame_left, text="Image Example", font=ctk.CTkFont(size=20, weight="bold"))
+        self.logo_label = ctk.CTkLabel(self.frame_left, text="Systema Energym", font=ctk.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=20)
 
         # Botones del menú
-        self.home_button = ctk.CTkButton(self.frame_left, text="Home", command=self.home_button_action)
+        self.home_button = ctk.CTkButton(self.frame_left, text="Inicio", command=self.home_button_action)
         self.home_button.grid(row=1, column=0, padx=20, pady=10)
 
-        self.frame2_button = ctk.CTkButton(self.frame_left, text="Frame 2", command=self.frame2_button_action)
+        self.frame2_button = ctk.CTkButton(self.frame_left, text="Inscripciones", command=self.frame2_button_action)
         self.frame2_button.grid(row=2, column=0, padx=20, pady=10)
 
-        self.frame3_button = ctk.CTkButton(self.frame_left, text="Frame 3", command=self.frame3_button_action)
+        self.frame3_button = ctk.CTkButton(self.frame_left, text="Perfil", command=self.frame3_button_action)
         self.frame3_button.grid(row=3, column=0, padx=20, pady=10)
 
         # Botón desplegable
@@ -50,22 +52,25 @@ class App(ctk.CTk):
         self.exit_button.grid(row=5, column=0, padx=20, pady=20, sticky="s")
 
     def create_right_frame(self):
-        # Crear el frame derecho (área principal)
-        self.frame_right = ctk.CTkFrame(self)
-        self.frame_right.grid(row=0, column=1, sticky="nswe", padx=20, pady=20)
+    # Crear el frame derecho (área principal)
+        frame = ctk.CTkFrame(self.Ventana, corner_radius=10)
+        frame.grid(row=0, column=1, sticky="nswe", padx=20, pady=20)
 
-        # Cargar y mostrar la imagen
-        image = Image.open("ruta_de_tu_imagen.png")  # Cambia esto por la ruta de tu imagen
-        image = image.resize((400, 150))  # Redimensionar la imagen al tamaño deseado
-        self.image_tk = ImageTk.PhotoImage(image)  # Convertir la imagen a PhotoImage compatible con Tkinter
+    # Cargar la imagen
+        try:
+            logo = Image.open("Imagenes/biceps.jpg")
+            logo = logo.resize((200, 200), Image.Resampling.LANCZOS)  # Usa Image.ANTIALIAS si tienes una versión de Pillow antigua
+            logo = ctk.CTkImage(light_image=logo, size=(200, 200))
+            
+            logo_label = ctk.CTkLabel(frame, image=logo, text="")
+            logo_label.grid(row=0, column=0, padx=20, pady=10)
+            
+        except Exception as e:
+            print(f"Error al cargar la imagen: {e}")
 
-        # Etiqueta con imagen en el área central
-        self.large_image_label = ctk.CTkLabel(self.frame_right, image=self.image_tk, text="")
-        self.large_image_label.grid(row=0, column=0, padx=20, pady=20)
-
-        # Botones en el área central (sin imágenes)
+        # Botones en el área central
         for i in range(4):
-            button = ctk.CTkButton(self.frame_right, text=f"CTkButton {i+1}", command=lambda i=i: self.button_action(i))
+            button = ctk.CTkButton(frame, text=f"CTkButton {i+1}", command=lambda i=i: self.button_action(i))
             button.grid(row=i+1, column=0, padx=20, pady=10)
 
     # Métodos para manejar las acciones de los botones
@@ -87,10 +92,5 @@ class App(ctk.CTk):
 
     # Método para salir de la aplicación
     def quit_app(self):
-        self.quit()  # Cierra la aplicación
+        self.Ventana.quit()  # Cierra la aplicación
         print("App has been closed")
-
-# Ejecutar la aplicación
-if __name__ == "__main__":
-    app = App()  # Crear una instancia de la clase App
-    app.mainloop()  # Ejecutar el bucle principal de la app

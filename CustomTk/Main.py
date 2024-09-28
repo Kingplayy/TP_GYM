@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from toplevel import Ventana_principal
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -7,9 +8,10 @@ class Login:
     def __init__(self):
         # Ventana principal
         self.root = ctk.CTk()
-        self.root.geometry("400x300")
+        self.root.geometry("400x400")
         self.root.title("Sistema Energym")
         self.Crear_botones()
+        self.root.resizable(False, False)
         
     def validar_login(self):
         username = self.entry_username.get()
@@ -50,16 +52,12 @@ class Login:
         self.label_resultado.pack(pady=10)
         
     def abrir_toplevel(self):
-        toplevel = ctk.CTkToplevel(self.root)
-        toplevel.geometry("300x200")
-        toplevel.title("Ventana Principal")
-
-        # Puedes agregar widgets a esta nueva ventana
-        etiqueta_bienvenida = ctk.CTkLabel(toplevel, text="Bienvenido a la aplicación")
-        etiqueta_bienvenida.pack(pady=20)
-    
+        self.destruir_ventana()
+        ventana = Ventana_principal()
+        ventana.crear_ventana()
+        
+    def destruir_ventana(self):
+        self.root.destroy()
+        
 root = Login()
 root.root.mainloop()
-
-
-
